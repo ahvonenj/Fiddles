@@ -1,0 +1,34 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{
+	font-family: Arial;
+	background-color: #bdc3c7;
+	overflow: hidden;
+}
+
+#wrapper
+{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #ecf0f1;
+	overflow: hidden;
+}
+
+#ball
+{
+	position: absolute;
+}
+
+#source
+{
+	position: absolute;
+	background: #f1c40f;
+	width: 100px;
+	height: 100px;
+}

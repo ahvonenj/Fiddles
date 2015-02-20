@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="jquery.transit.min.js"></script>
+		<script src="pixi.dev.js"></script>
+		<script src="chance.min.js"></script>
+		<script src="stats.min.js"></script>
+		<style>
+			*
+			{
+				margin: 0;
+				padding: 0;
+			}
+			
+			body
+			{
+				width: 100%;
+				height: 100%;	
+			}
+			
+			body, html
+			{
+				overflow: hidden;
+			}
+		</style>
+		<script>
+			var keysDown = [];
+			var main_loop;
+			var base_time = 0;
+			var acc_time = 0;
+			var stats;
+			var GAME_WIDTH;
+			var GAME_HEIGHT;
+			
+			$(document).ready(function()
+			{
+				window.oncontextmenu = function() 
+				{
+					return false;
+				};
+			
+			
+				
+				GAME_WIDTH = $(window).width();
+				GAME_HEIGHT = $(window).height();
+				
+				var renderer = new PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT);
+				document.body.appendChild(renderer.view);
+
+				var stage = new PIXI.Stage(0xFFFFFF);
+				
+				var whiteTexture = PIXI.Texture.fromImage("white.png");
+				var blackTexture = PIXI.Texture.fromImage("black.png");
+				var blueTexture = PIXI.Texture.fromImage("blue.png");
+				var redTexture = PIXI.Texture.fromImage("red.png");
+				
+				var grid = [];
+				
+				for(var i = 0; i < GAME_WIDTH / 25; i++)
+				{
+					var a = [];
+					
+					for(var j = 0; j < GAME_HEIGHT / 25; j++)
+					{
+						var gridElement = new PIXI.Sprite(whiteTexture);
+
+						gridElement.position.x = i * 25;
+						gridElement.position.y = j * 25;
+
+						gridElement.scale.x = 1;
+						gridElement.scale.y = 1;
+						
+						gridElement.anchor.x = 0.5;
+						gridElement.anchor.y = 0.5;
+
+						a.push(gridElement);
+						stage.addChild(gridElement);
+					}
+					grid.push(a);
+				}
+				
+				var mouseRectCursor = new PIXI.Graphics();
+				
+				mouseRectCursor.beginFill(0x2ECC71, 0.5);
+				mouseRectCursor.drawRect(-12.5, -12.5, 25, 25);
+				mouseRectCursor.endFill();
+				
+				stage.addChild(mouseRectCursor);
+				
+				stats = new Stats();
+				document.body.appendChild( stats.domElement );
+				stats.domElement.style.position = "absolute";
+				stats.domElement.style.top = "15px";
+				stats.domElement.style.left = "15px";
+				
+				var toolselected = document.createElement("div");
+				toolselected.className = "toolselected";
+				$(toolselected).css('color', 'black');
+				$(toolselected).css('position', 'absolute');
+				$(toolselected).css('left', '15px');
+				$(toolselected).css('top', '75px');
+				$(toolselected).css('font-family', 'Arial');
+				$(toolselected).css('font-size', '24px');
+				$(toolselected).text('Tool: [1]');
+				document.body.appendChild(toolselected);
+				
+				
+				requestAnimationFrame(animate);
+
+				function animate() 
+				{
+					update();
+					renderer.render(stage);
+					requestAnimationFrame(animate);
+					stats.end();
+				}
+				
+				function update()
+				{
+					stats.begin();
+					base_time++;
+					acc_time += 0.01;
+					$(toolselected).text('Tool: [' + currentTool + ']');
+				}
+				
+				var mouseLeftDown = false;
+				var mouseMiddleDown = false;
+				var mouseRightDown = false;
+				
+				stage.mousedown = function(e)
+				{				
+					switch(e.originalEvent.which)
+					{
+						case 1:
+							mouseLeftDown = true;
+							break;
+						case 2:
+							mouseMiddleDown = true;
+							break;
+						case 3:
+							mouseRightDown = true;
+							break;
+						default:
+							break;
+					}
+				};
+				
+				stage.mouseup = function(e)
+				{		
+					switch(e.originalEvent.which)
+					{
+						case 1:
+							mouseLeftDown = false;
+							lastGridPos.x = undefined;
+							lastGridPos.y = undefined;
+							break;
+						case 2:
+							mouseMiddleDown = false;
+							break;
+						case 3:
+							mouseRightDown = false;
+							break;
+						default:
+							break;
+					}
+				};
+				
+				var lastGridPos = { x: undefined, y: undefined };
+				var isEndPlaced = false;
+				var isStartPlaced = false;
+				
+				stage.mousemove = function(e)
+				{
+					var m = e.getLocalPosition(stage);
+					
+					mouseRectCursor.x = m.x;
+					mouseRectCursor.y = m.y;
+					
+					if(mouseLeftDown || mouseMiddleDown || mouseRightDown)
+					{
+						for(var i = 0; i < grid.length; i++)
+						{
+							for(var j = 0; j < grid[i].length; j++)
+							{
+								if(grid[i][j].getBounds().contains(m.x, m.y))
+								{
+									if(mouseLeftDown)
+									{
+										if(lastGridPos.x != undefined && lastGridPos.y != undefined)
+										{
+											var gd = gridDist(lastGridPos.x, j, lastGridPos.y, i);
+											//console.log(lastGridPos.x + ' | ' + lastGridPos.y);
+										
+											console.log(lastGridPos.x + ' | ' + lastGridPos.y);
+											console.log(i + ' | ' + j);
+											drawLine(lastGridPos.x, lastGridPos.y, i, j, 'black');
+										}
+										lastGridPos = { x: i, y: j };
+									}
+									else if(mouseRightDown)
+									{
+										if(lastGridPos.x != undefined && lastGridPos.y != undefined)
+										{
+											var gd = gridDist(lastGridPos.x, j, lastGridPos.y, i);
+											drawLine(lastGridPos.x, lastGridPos.y, i, j, 'white');
+										}
+										lastGridPos = { x: i, y: j };
+									}
+									else if(mouseMiddleDown)
+									{
+										if(currentTool == 1 && !isStartPlaced)
+										{
+											if(grid[i][j].texture == redTexture)
+												isEndPlaced = false;
+											
+											grid[i][j].setTexture(blueTexture);
+											isStartPlaced = true;
+										}
+										
+										if(currentTool == 2 && !isEndPlaced)
+										{
+											if(grid[i][j].texture == blueTexture)
+												isStartPlaced = false;
+											
+											grid[i][j].setTexture(redTexture);
+											isEndPlaced = true;
+										}
+										
+									}
+								}
+							}
+						}
+					}
+				};
+				
+				var currentTool = 1;
+				
+				$(document).on('keypress', function(e)
+				{
+					console.log(e.which);
+					
+					if(e.which == 49) //1
+					{
+						currentTool = 1;
+					}
+					else if(e.which == 50) //2
+					{
+						currentTool = 2;
+					}
+					else if(e.which == 51) //3
+					{
+						currentTool = 3;
+					}
+				});
+				
+				function gridDist(x0, y0, x1, y1)
+				{
+					var dx = Math.abs(x0-x1);
+					var dy = Math.abs(y0-y1);
+					
+					return { x: dx, Y: dy };
+				}
+				
+				function drawLine(x0, y0, x1, y1, tex)
+				{
+					var dx = Math.abs(x1-x0);
+					var dy = Math.abs(y1-y0);
+					
+					if (x0 < x1) { var sx=1; } else { var sx=-1; }
+					if (y0 < y1) { var sy=1; } else { var sy=-1; }
+					
+					var err = dx-dy;
+					
+					var loop = true;
+					
+					while(loop)
+					{
+						if(grid[x0][y0].texture == blueTexture)
+						{
+							isStartPlaced = false;
+						}
+						
+						if(grid[x0][y0].texture == redTexture)
+						{
+							isEndPlaced = false;
+						}
+						
+						if(tex == 'black')
+						{
+							grid[x0][y0].setTexture(blackTexture);
+						}
+						else if(tex == 'white')
+						{
+							grid[x0][y0].setTexture(whiteTexture);
+						}
+						else
+						{
+							grid[x0][y0].setTexture(blackTexture);
+						}
+						
+						if((x0 == x1) && (y0 == y1))
+							loop = false;
+						
+						var e2 = 2*err;
+						
+						if(e2 > -dy)
+						{
+							err = err - dy;
+							x0 = x0 + sx;
+						}
+						
+						if(e2 < dx)
+						{
+							err = err + dx;
+							y0 = y0 + sy;
+						}
+					}	
+				}
+				
+				function scanGrid()
+				{
+					for(var i = 0; i < grid.length; i++)
+					{
+						for(var j = 0; j < grid[i].length; j++)
+						{
+						
+						}
+					}
+				}
+				
+				function dist(a, b)
+				{
+					return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+				}
+
+				function dir(a, b)
+				{
+					return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+				}
+			});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

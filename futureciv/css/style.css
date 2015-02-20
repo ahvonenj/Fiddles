@@ -1,0 +1,473 @@
+@font-face 
+{
+    font-family: 'nova';
+    src: url('../font/novamono.ttf'); /*URL to font*/
+}
+
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+*:active, *:hover
+{
+	cursor: default;
+}
+
+body, html 
+{
+	height: 100%;
+	overflow: hidden;
+}
+
+body
+{
+	background: url('../res/starfiel.gif');
+	
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/*******************************************************************
+EFFECTS
+*******************************************************************/
+
+.blur1
+{
+	-webkit-filter: blur(1px);
+	-moz-filter: blur(1px);
+	-o-filter: blur(1px);
+	-ms-filter: blur(1px);
+	filter: blur(1px);
+}
+
+.blur2
+{
+	-webkit-filter: blur(2px);
+	-moz-filter: blur(2px);
+	-o-filter: blur(2px);
+	-ms-filter: blur(2px);
+	filter: blur(2px);
+}
+
+.blur3
+{
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}
+
+.blur4
+{
+	-webkit-filter: blur(4px);
+	-moz-filter: blur(4px);
+	-o-filter: blur(4px);
+	-ms-filter: blur(4px);
+	filter: blur(4px);
+}
+
+.blur5
+{
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+}
+
+
+
+#wrapper
+{
+	background-color: rgba(62, 77, 94, 0.31);
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	visibility: hidden;
+	z-index: 200;
+	-webkit-box-shadow: inset 0px 0px 110px rgba(82,97,114,0.4);
+	-moz-box-shadow:    inset 0px 0px 110px rgba(82,97,114,0.4);
+	box-shadow:         inset 0px 0px 110px rgba(82,97,114,0.4);
+}
+
+#banner
+{
+	background-color: rgba(87, 87, 92, 1);
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	visibility: hidden;
+	overflow: hidden;
+	width: 100%;
+	height: 50px;
+	color: #F15535;
+	font-size: 48px;
+	font-family: nova;
+	line-height: 50px;
+	padding-left: 15px;
+	z-index: 300;	
+}
+
+.banner_options_icon
+{
+	width: 40px;
+	height: 40px;
+	vertical-align: center;
+	float: right;
+	margin-right: 20px;
+	margin-top: 5px;
+}
+
+.banner_options_icon:hover
+{
+	cursor: pointer !important;
+}
+
+#bannertext
+{
+	display: none;
+	/*text-shadow: 0px 0px 10px #F15535;*/
+}
+
+.star
+{
+	left: 0;
+	top: 0;
+	position: fixed;
+	width: 2px;
+	height: 2px;
+	z-index: 100;
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	border-radius: 1px;
+}
+
+img.star
+{
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
+}
+
+.particle
+{
+	left: 0;
+	top: 0;
+	position: fixed;
+	width: 2px;
+	height: 2px;
+	z-index: 100;
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	border-radius: 1px;
+}
+
+img.particle
+{
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
+}
+
+.window
+{
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 300;
+	font-family: nova;
+	color: #ECDFD5;
+	width: 100px;
+	height: 100px;
+	visibility: hidden;
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
+}
+
+.window_titlebar
+{
+	width: 100%;
+	height: 25px;
+	position: relative;
+	left: 0;
+	top: 0;
+	background-color: #89A9C1;
+	line-height: 25px;
+}
+
+.window_titlebar_text
+{
+	padding-left: 5px;
+	font-size: 28px;
+}
+
+.window_titlebar_minimize, .window_titlebar_close
+{
+	width: 23px;
+	height: 23px;
+	line-height: 25px;
+	float:right;
+	border: 1px solid #ECDFD5;
+	font-weight: bold;
+	font-size: 22px;
+	text-align: center;
+}
+
+.window_titlebar_minimize:hover, .window_titlebar_close:hover
+{
+	border: 1px solid #F15535;
+	color: #F15535;
+	cursor: pointer !important;
+}
+
+.window_titlebar_minimize
+{
+	margin-right: 2px;
+}
+
+.window_titlebar_close
+{
+	
+}
+
+.desktop_icon .ui-selecting {
+    background: #ccc;
+  }
+  .desktop_icon .ui-selected {
+    background: #999;
+  }
+
+.window_content
+{
+	padding: 5px;
+	font-size: 24px;
+	background-color: rgba(87, 87, 92, 0.6);
+	border-bottom: 1px solid #89A9C1;
+	border-left: 1px solid #89A9C1;
+	border-right: 1px solid #89A9C1;
+	overflow: hidden;
+	height: 240px;
+}
+
+.resources_table, .settings_table
+{
+	width: 100%;
+	height: 100%;
+	border-collapse: collapse;
+}
+
+.resources_table tr:not(:last-child) td
+{
+	border-bottom: 1px solid #ECDFD5;
+}
+
+.resources_table td:last-child
+{
+	text-align: right;
+	width: 150px;
+}
+
+.settings_table td.setting_kategory_header
+{
+	height: 15px;
+}
+
+.settings_table tr:not(:last-child) td
+{
+	height: 15px;
+}
+
+.settings_table tr:last-child td
+{
+	height: 100%;
+}
+
+.settings_table tr td:last-child
+{
+	
+}
+
+.settings_table td.setting_name
+{
+	width: auto;
+	padding-left: 10px;
+}
+
+.settings_table td.setting_state
+{
+	width: 60px;
+	text-align: right;
+}
+
+.settings_table td.setting_state:hover
+{
+	cursor: pointer !important;
+}
+
+.settings_table td.setting_on
+{
+	color: #2ecc71;
+}
+
+.settings_table td.setting_off
+{
+	color: #e74c3c;
+}
+
+.resources_table tr:nth-child(1) td:first-child,
+.resources_table tr:nth-child(2) td:first-child,
+.resources_table tr:nth-child(3) td:first-child
+{
+	color: #2ecc71;
+}
+
+.resources_table tr:nth-child(4) td:first-child,
+.resources_table tr:nth-child(5) td:first-child
+{
+	color: #f1c40f;
+}
+
+.resources_table tr:nth-child(6) td:first-child,
+.resources_table tr:nth-child(7) td:first-child
+{
+	color: #9b59b6;
+}
+
+.resources_table tr:nth-child(8) td:first-child,
+.resources_table tr:nth-child(9) td:first-child,
+.resources_table tr:nth-child(10) td:first-child
+{
+	color: #e74c3c;
+}
+
+
+
+.profile_table, .profile_table tr, .profile_table td
+{
+	width: 100%;
+	height: 100%;
+	border-collapse: collapse;
+	//border: 1px solid white;
+}
+
+.profile_table tr:not(:last-child)
+{
+	height: 25px;
+}
+
+.profile_table tr:last-child
+{
+	height: 100%;
+}
+
+.profile_table td:not(:last-child)
+{
+	height: 25px;
+}
+
+.profile_table td:last-child
+{
+	height: auto;
+}
+
+.profile_picture
+{
+	height: 150px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	-webkit-box-shadow: inset 0px 0px 60px rgba(255,255,255,0.6);
+	-moz-box-shadow:    inset 0px 0px 60px rgba(255,255,255,0.6);
+	box-shadow:         inset 0px 0px 60px rgba(255,255,255,0.6);
+}
+
+.desktop_icon
+{
+	position: fixed;
+	overflow: hidden;
+	background-color: rgba(87, 87, 92, 0.6);
+	border: 1px solid #89A9C1;
+	left: 0;
+	top: 0;	
+	z-index: 300;
+	font-family: nova;
+	color: #ECDFD5;
+	visibility: hidden;
+	
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
+	
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+.desktop_icon:hover, .desktop_icon_content:hover, .desktop_icon_image:hover
+{
+	cursor: pointer !important;
+}
+
+.desktop_icon_content
+{
+	font-size: 60px;
+	line-height: 50px;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}

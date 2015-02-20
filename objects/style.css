@@ -1,0 +1,53 @@
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{
+	width: 100%;
+	background-color: #bdc3c7;
+	font-family: Arial;
+}
+
+#wrapper
+{
+	width: 90%;
+	height: 96%;
+	background-color: #ecf0f1;
+	position: absolute;
+	left: 50%;
+	top: 2%;
+	transform: translate(-50%, 0%);
+	-ms-transform: translate(-50%, 0%);
+	-webkit-transform: translate(-50%, 0%);
+}
+
+#header
+{
+	text-align: center;
+	margin-top: 15px;
+}
+
+hr.not_full_width
+{
+	width: 96%;
+	margin-left: 2%;
+	margin-top: 15px;
+	border-top: 1px solid #bdc3c7;
+}
+
+#tests_table
+{
+	border-collapse: collapse;
+	width: 96%;
+	border: 1px solid #bdc3c7;
+	margin-top: 15px;
+	margin-left: 2%;
+}
+
+#tests_table td
+{
+	padding: 5px;
+}

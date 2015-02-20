@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="jquery.transit.min.js"></script>
+		<script src="pixi.dev.js"></script>
+		<script src="chance.min.js"></script>
+		<script src="stats.min.js"></script>
+		<style>
+			*
+			{
+				margin: 0;
+				padding: 0;
+			}
+			
+			body
+			{
+				width: 100%;
+				height: 100%;
+			}
+			
+			#tbl
+			{
+				border-collapse: collapse;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 300px;
+			}
+			
+			#tbl td
+			{
+				width: 20px;
+				height: 20px;
+				background-color: rgba(236, 240, 241, 1.0);
+			}
+			
+			#tbl td, #tbl tr
+			{
+				border: 1px solid white;
+			}
+		</style>
+		<script>
+			var keysDown = [];
+			var main_loop;
+			var base_time = 0;
+			var acc_time = 0;
+			var stats;
+			var GAME_WIDTH;
+			var GAME_HEIGHT;
+			
+			$(document).ready(function()
+			{
+				
+				GAME_WIDTH = $(window).width();
+				GAME_HEIGHT = $(window).height();
+				
+				var renderer = new PIXI.autoDetectRenderer(GAME_WIDTH - 100, GAME_HEIGHT - 100);
+
+				document.body.appendChild(renderer.view);
+
+				var stage = new PIXI.Stage(0xFFFFFF);
+
+				var arrowTexture = PIXI.Texture.fromImage("arrw.png");
+				
+				var arrowList = [];
+				
+				for(var i = 0; i < 100; i++)
+				{
+					for(var j = 0; j < 100; j++)
+					{
+						var arrow = new PIXI.Sprite(arrowTexture);
+
+						arrow.position.x = i * 8;
+						arrow.position.y = j * 8;
+
+						arrow.scale.x = 1;
+						arrow.scale.y = 1;
+						
+						arrow.anchor.x = 0.5;
+						arrow.anchor.y = 0.5;
+
+						arrowList.push(arrow);
+						stage.addChild(arrow);
+					}
+				}
+				
+				
+				stats = new Stats();
+				
+				
+				document.body.appendChild( stats.domElement );
+				stats.domElement.style.position = "absolute";
+				stats.domElement.style.top = "0px";
+				
+				requestAnimationFrame(animate);
+
+				function animate() 
+				{
+					update();
+					renderer.render(stage);
+					requestAnimationFrame(animate);
+					stats.end();
+				}
+				
+				function update()
+				{
+					stats.begin();
+					base_time++;
+					acc_time += 0.01;
+				}
+				
+				stage.mousemove = function(mouseData)
+				{
+					var m = mouseData.getLocalPosition(stage);
+					
+					if($('#injection').val() != undefined && $('#injection').val() != "" &&
+					$('#injection').val().length > 0)
+					{
+						try
+						{
+							var func = Math.random() * 10000;
+							$('#injectedScript').empty().html('function ' + func + '() {' + $('#injection').val() + '}');
+							console.log(func);
+							console.log(func());
+						}
+						catch(Exception)
+						{
+						
+						}
+					}
+					
+					for(var i = 0; i < arrowList.length; i++)
+					{
+						var dst = dist(
+						{
+							x: m.x,
+							y: m.y
+						},
+						{
+							x: arrowList[i].position.x,
+							y: arrowList[i].position.y
+						});
+						
+						var dr = dir(
+						{
+							x: m.x,
+							y: m.y
+						},
+						{
+							x: arrowList[i].position.x,
+							y: arrowList[i].position.y
+						});
+	
+						if(Math.sin(dst) > Math.cos(dst))
+						{
+							arrowList[i].rotation = ((dr - 90) * Math.PI/180);
+						}
+						else
+						{
+							//arrowList[i].rotation = ((dr - 90) * Math.PI/180);
+						}
+					}
+				}
+							
+				
+				function dist(a, b)
+				{
+					return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+				}
+
+				function dir(a, b)
+				{
+					return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+				}
+			});
+		</script>
+		<script id = "injectedScript"></script>
+	</head>
+	<body>
+		<textarea id = "injection" rows = "50" cols = "150" placeholder = "Inject js here..."></textarea>
+	</body>
+</html>

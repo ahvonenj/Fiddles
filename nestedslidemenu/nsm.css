@@ -1,0 +1,143 @@
+*
+{
+	padding: 0;
+	margin: 0;
+}
+
+body
+{
+	width: 100%;
+	height: 100%;
+	background-color: #ecf0f1;
+	font-family: 'Myriad Pro', Arial;
+}
+
+#wrapper
+{
+	width: 100%;
+	min-height: 100%;
+	background-color: #bdc3c7;
+	overflow: hidden;
+}
+
+#content
+{
+	width: 100%;
+	height: 100%;
+	background-color: #95a5a6;
+	overflow: hidden;
+}
+
+.nestedlaunchbutton
+{
+	width: 150px;
+	height: 100px;
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	transform: translate(0, -50%);
+	-ms-transform: translate(0, -50%);
+	-webkit-transform: translate(0, -50%);
+}
+
+.nsm
+{
+	z-index: 100000;
+}
+
+.nsm_nested
+{
+	z-index: 150000;
+}
+
+.nested_open_button
+{
+	text-align: center;
+	line-height: 50px;
+	color: #ecf0f1;
+	font-size: 22px;
+}
+
+.nested_close_button
+{
+	text-align: center;
+	line-height: 50px;
+	color: #ecf0f1;
+	font-size: 22px;
+}
+
+.nested_open_button, .nested_close_button
+{
+	border: 1px solid white;
+	-webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.21);
+	-moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.21);
+	box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.21);
+	
+	overflow: hidden;
+	z-index: 500000;
+	//position: relative !important;
+	
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	width: 50px;
+	height: 50px;
+	background-color: #16a085;
+	position: fixed;
+}
+
+.nested_open_button:hover, .nested_close_button:hover
+{
+	-webkit-border-radius: 55px;
+	-moz-border-radius: 55px;
+	border-radius: 55px;
+	width: 55px;
+	height: 55px;
+	cursor: pointer;
+}
+
+#nested_a
+{
+	background-color: #1abc9c;
+	width: 250px !important;
+}
+
+#nested_b
+{
+	background-color: #2ecc71;
+	width: 350px !important;
+}
+
+#nested_c
+{
+	background-color: #3498db;
+	width: 225px !important;
+}
+
+#nested_d
+{
+	background-color: #f1c40f;
+	width: 300px !important;
+}
+
+#nested_e
+{
+	background-color: #f39c12;
+	width: 375px !important;
+}
+
+.nsm_nested_table
+{
+	width: 100%;
+	height: 100%;
+}
+
+.nsm_nested_table tr:last-child td
+{
+	height: 100%;
+}
+
+#nsm_nested_table_a tr:first-child td
+{
+	text-align: center;
+}
